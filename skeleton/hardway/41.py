@@ -21,7 +21,7 @@ if len(sys.argv) == 2 and sys.argv[1] == "english":
 for word in urlopen(WORD_URL).readlines():
     WORDS.append(word.strip())
 
-print WORDS
+#print WORDS
 
 
 def convert(snippet, phrase):
@@ -53,6 +53,9 @@ def convert(snippet, phrase):
 try:
     while True:
         snippets = PHRASES.keys()
+
+        #print snippets
+
         random.shuffle(snippets)
 
         for snippet in snippets:
