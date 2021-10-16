@@ -23,3 +23,9 @@ wheel==0.37.0
 zstd==1.4.9
 librosa==0.8.1
 
+
+scipy~=1.7.1
+openpyxl~=3.0.9
+scikit-learn~=1.0
+joblib~=1.1.0
+pydub~=0.25.1
