@@ -1,5 +1,5 @@
 #! /usr/bin/env python 
-#-*- encoding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 
 """
 书籍《Python股票量化交易入门到实践 》案例例程
@@ -11,8 +11,7 @@
 
 import numpy as np
 
-print(np.__version__) # 1.15.1
-
+print(np.__version__)  # 1.15.1
 
 # 3.1 初识N维数组对象
 if False:
@@ -21,9 +20,9 @@ if False:
     """
     [1. 2. 3. 4. 5. 6.]
     """
-    print(array_1x6.ndim) # 1
-    print(array_1x6.shape) # (6,)
-    print(array_1x6.dtype) # float64
+    print(array_1x6.ndim)  # 1
+    print(array_1x6.shape)  # (6,)
+    print(array_1x6.dtype)  # float64
 
     array_2x6 = np.array([[1.0, 2.0, 3.0, 4.0, 5.0, 6.0], [1.1, 2.1, 3.1, 4.1, 5.1, 6.1]])
     print(array_2x6)
@@ -31,12 +30,13 @@ if False:
     [[1.  2.  3.  4.  5.  6. ]
      [1.1 2.1 3.1 4.1 5.1 6.1]]
     """
-    print(array_2x6.ndim) # 2
-    print(array_2x6.shape) # (2, 6)
-    print(array_2x6.dtype) # float64
+    print(array_2x6.ndim)  # 2
+    print(array_2x6.shape)  # (2, 6)
+    print(array_2x6.dtype)  # float64
 
-    array_2x3x6 = np.array([[[1.0,2.0,3.0,4.0,5.0,6.0],[1.1,2.1,3.1,4.1,5.1,6.1],[1.2,2.2,3.2,4.2,5.2,6.2]],
-                         [[7.0,8.0,9.0,10.0,11.0,12.0],[7.1,8.1,9.1,10.1,11.1,12.1],[7.2,8.2,9.2,10.2,11.2,12.2]]])
+    array_2x3x6 = np.array(
+        [[[1.0, 2.0, 3.0, 4.0, 5.0, 6.0], [1.1, 2.1, 3.1, 4.1, 5.1, 6.1], [1.2, 2.2, 3.2, 4.2, 5.2, 6.2]],
+         [[7.0, 8.0, 9.0, 10.0, 11.0, 12.0], [7.1, 8.1, 9.1, 10.1, 11.1, 12.1], [7.2, 8.2, 9.2, 10.2, 11.2, 12.2]]])
     print(array_2x3x6)
     """
     [[[ 1.   2.   3.   4.   5.   6. ]
@@ -47,26 +47,26 @@ if False:
       [ 7.1  8.1  9.1 10.1 11.1 12.1]
       [ 7.2  8.2  9.2 10.2 11.2 12.2]]]
     """
-    print(array_2x3x6.ndim) # 3
-    print(array_2x3x6.shape) # (2, 3, 6)
-    print(array_2x3x6.dtype) # float64
+    print(array_2x3x6.ndim)  # 3
+    print(array_2x3x6.shape)  # (2, 3, 6)
+    print(array_2x3x6.dtype)  # float64
 
 # 3.2 N维数组对象特性 矢量运算和广播特性
 if False:
     # Python for...in 循环
-    list_4x3_a = [[1,1,1],[2,2,2],[3,3,3],[4,4,4]]
-    list_4x3_b = [[5,5,5],[5,5,5],[5,5,5],[5,5,5]]
-    list_4x3_c = [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
+    list_4x3_a = [[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4]]
+    list_4x3_b = [[5, 5, 5], [5, 5, 5], [5, 5, 5], [5, 5, 5]]
+    list_4x3_c = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
 
     for i in range(4):
         for j in range(3):
             list_4x3_c[i][j] = list_4x3_a[i][j] + list_4x3_b[i][j]
-    print(list_4x3_c) # [[6, 6, 6], [7, 7, 7], [8, 8, 8], [9, 9, 9]]
+    print(list_4x3_c)  # [[6, 6, 6], [7, 7, 7], [8, 8, 8], [9, 9, 9]]
 
     # Numpy 矢量化运算——表达式
-    array_4x3_a = np.array([[1,1,1],[2,2,2],[3,3,3],[4,4,4]]) # 创建'numpy.ndarray'多维数组
-    array_4x3_b = np.array([[5,5,5],[5,5,5],[5,5,5],[5,5,5]])
-    print(array_4x3_a+array_4x3_b)
+    array_4x3_a = np.array([[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4]])  # 创建'numpy.ndarray'多维数组
+    array_4x3_b = np.array([[5, 5, 5], [5, 5, 5], [5, 5, 5], [5, 5, 5]])
+    print(array_4x3_a + array_4x3_b)
     """
     [[6 6 6]
      [7 7 7]
@@ -75,7 +75,7 @@ if False:
     """
 
     # Numpy 广播特性——标量
-    print(array_4x3_a+5)
+    print(array_4x3_a + 5)
     """
     [[6 6 6]
      [7 7 7]
@@ -84,8 +84,8 @@ if False:
     """
 
     # Numpy 广播特性——兼容规则
-    array_4x3 = np.array([[1,1,1],[2,2,2],[3,3,3],[4,4,4]])
-    array_1x3 = np.array([1,2,3])
+    array_4x3 = np.array([[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4]])
+    array_1x3 = np.array([1, 2, 3])
     print(array_4x3 + array_1x3)
     """
     [[2 3 4]
@@ -94,7 +94,7 @@ if False:
      [5 6 7]]
     """
 
-    array_4x3 = np.array([[1,1,1],[2,2,2],[3,3,3],[4,4,4]])
+    array_4x3 = np.array([[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4]])
     print(array_4x3)
     """
     [[1 1 1]
@@ -102,16 +102,16 @@ if False:
      [3 3 3]
      [4 4 4]]
     """
-    array_2x1 = np.array([[1],[1]])
+    array_2x1 = np.array([[1], [1]])
     print(array_2x1)
     """
     [[1]
      [1]]    
     """
-    #print(array_4x3 + array_2x1)
+    # print(array_4x3 + array_2x1)
     # ValueError: operands could not be broadcast together with shapes (4,3) (2,1)
-    array_4x3 = np.array([[1,1,1],[2,2,2],[3,3,3],[4,4,4]])
-    array_4x1 = np.array([[1],[1],[1],[1]])
+    array_4x3 = np.array([[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4]])
+    array_4x1 = np.array([[1], [1], [1], [1]])
     print(array_4x1)
     """
     [[1]
@@ -130,7 +130,9 @@ if False:
 # 3.3 高效处理的性能对比
 if False:
     # 引用于2.6.2小节
-    import functools,time
+    import functools, time
+
+
     # 定义测试代码执行时间的装饰器-三阶
     def timeit_test(number=3, repeat=3):
         def decorator(func):
@@ -144,21 +146,25 @@ if False:
                     print('Time of {} used: {} '.format(i, elapsed))
 
             return wrapper
+
         return decorator
 
-        #测试Numpy数组和等价的Python列表性能差距
+        # 测试Numpy数组和等价的Python列表性能差距
+
 
     if False:
         @timeit_test(number=1, repeat=1)
         def list_test():
             my_list = list(range(1000000))
 
+
         @timeit_test(number=1, repeat=1)
         def ndarray_test():
             my_arr = np.arange(1000000)
 
-        list_test() # Time of 0 used: 0.04712673199999998
-        ndarray_test() # Time of 0 used: 0.0014547089999999985
+
+        list_test()  # Time of 0 used: 0.04712673199999998
+        ndarray_test()  # Time of 0 used: 0.0014547089999999985
 
     else:
         @timeit_test(number=1, repeat=1)
@@ -167,21 +173,22 @@ if False:
             for num in range(1000000):
                 my_list.append(num * 2.0)
 
+
         @timeit_test(number=1, repeat=1)
         def ndarray_test():
             my_arr = np.arange(1000000)
             my_arr = my_arr * 2.0
 
-        list_test() # Time of 0 used: 0.15243656000000003
-        ndarray_test() # Time of 0 used: 0.009769811999999989
 
+        list_test()  # Time of 0 used: 0.15243656000000003
+        ndarray_test()  # Time of 0 used: 0.009769811999999989
 
     # ndarray处理数据的机制
-    print(np.array([[1,1,1],[2,2,2],[3,3,3],[4,4,4]]).shape)
+    print(np.array([[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4]]).shape)
     # (4, 3)
-    print(np.array([[1,1,1],[2,2,2],[3,3,3],[4,4,4]]).dtype)
+    print(np.array([[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4]]).dtype)
     # int64
-    print(np.array([[1,1,1],[2,2,2],[3,3,3],[4,4,4]]).strides)
+    print(np.array([[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4]]).strides)
     # (24, 8)
 
 # 条件表达式选取元素
@@ -303,7 +310,7 @@ if True:
     print("*****example-3.22*****")
     np.random.seed(1)  # 设置相同的seed 每次生成的随机数相同 便于调试 
     # normal(loc=0.0, scale=1.0, size=None)
-    array_normal = np.random.normal(loc=10.0, scale=1.0, size=(1,3,2))
+    array_normal = np.random.normal(loc=10.0, scale=1.0, size=(1, 3, 2))
     print(array_normal)
     """
     [[[11.62434536  9.38824359]
@@ -349,7 +356,6 @@ if True:
     """
     print("*********************\n")
 
-
 # 3.4.3 线性代数处理函数
 if False:
     matrix_a = np.mat('1 3 5; 2 4 6')
@@ -364,15 +370,15 @@ if False:
     [[1 3 5]
      [2 4 6]]    
     """
-    print(type(matrix_a)) # <class 'numpy.matrixlib.defmatrix.matrix'>
-    print(type(matrix_b)) # <class 'numpy.matrixlib.defmatrix.matrix'>
+    print(type(matrix_a))  # <class 'numpy.matrixlib.defmatrix.matrix'>
+    print(type(matrix_b))  # <class 'numpy.matrixlib.defmatrix.matrix'>
     array_c = np.array([[1, 3, 5], [2, 4, 6]])
     print(array_c)
     """
     [[1 3 5]
      [2 4 6]]
     """
-    print(type(array_c)) # <class 'numpy.ndarray'>
+    print(type(array_c))  # <class 'numpy.ndarray'>
 
     # 构建一个4*4的随机数组 
     array_1 = np.random.rand(4, 4)
@@ -383,7 +389,7 @@ if False:
      [0.98629936 0.10134345 0.36475073 0.03950319]
      [0.16878454 0.08078799 0.38428045 0.36453119]]
     """
-    print(type(array_1)) # <class 'numpy.ndarray'>
+    print(type(array_1))  # <class 'numpy.ndarray'>
     # 使用np.mat函数将数组转化为矩阵
     matrix_1 = np.mat(array_1)
     print(matrix_1)
@@ -393,7 +399,7 @@ if False:
      [0.98629936 0.10134345 0.36475073 0.03950319]
      [0.16878454 0.08078799 0.38428045 0.36453119]]
     """
-    print(type(matrix_1)) # <class 'numpy.matrixlib.defmatrix.matrix'>
+    print(type(matrix_1))  # <class 'numpy.matrixlib.defmatrix.matrix'>
 
     A = np.mat([[1, 2], [3, 4]])
     B = np.mat([[1, 2], [3, 4]])
@@ -420,7 +426,7 @@ if False:
     B = np.mat([[6], [-4], [27]])
     print('计算：A^(-1)B：')
     X = np.linalg.solve(A, B)
-    print(X) # x = 5, y = 3, z = -2 的解
+    print(X)  # x = 5, y = 3, z = -2 的解
     """
     [[ 5.]
      [ 3.]

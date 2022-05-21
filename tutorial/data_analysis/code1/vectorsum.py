@@ -23,9 +23,9 @@ def numpysum(n):
     b = np.arange(n) ** 3
     c = a + b
 
-    print a
-    print b
-    print c
+    print(a)
+    print(b)
+    print(c)
 
     return c
 
@@ -45,17 +45,17 @@ def pythonsum(n):
 
 size = int(sys.argv[1])
 
-#print sys.argv[0]
-#print sys.argv[1]
+# print sys.argv[0]
+# print sys.argv[1]
 
 start = datetime.now()
 c = pythonsum(size)
 delta = datetime.now() - start
-print "The last 2 elements of the sum", c[-2:]
-print "PythonSum elapsed time in microseconds", delta.microseconds
+print("The last 2 elements of the sum", c[-2:])
+print("PythonSum elapsed time in microseconds", delta.microseconds)
 
 start = datetime.now()
 c = numpysum(size)
 delta = datetime.now() - start
-print "The last 2 elements of the sum", c[-2:]
-print "NumPySum elapsed time in microseconds", delta.microseconds
+print("The last 2 elements of the sum", c[-2:])
+print("NumPySum elapsed time in microseconds", delta.microseconds)
