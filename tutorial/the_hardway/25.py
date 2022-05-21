@@ -9,12 +9,12 @@ def sort_words(words):
 
 def print_first_word(words):
     word = words.pop(0)
-    print word
+    print(word)
 
 
 def print_last_word(words):
     word = words.pop(-1)
-    print word
+    print(word)
 
 
 def sort_sentence(sentence):
@@ -35,6 +35,6 @@ def print_first_and_last_sorted(sentence):
 
 
 sentence = "All good things come to those who wait."
-print break_words(sentence)
+print(break_words(sentence))
 print_first_word(break_words(sentence))
-sprint_last_word(break_words(sentence))
+# sprint_last_word(break_words(sentence))

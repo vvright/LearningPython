@@ -1,11 +1,11 @@
 class Parent(object):
     def override(self):
-        print "PARENT implicit()"
+        print("PARENT implicit()")
 
 
 class Child(Parent):
     def override(self):
-        print "CHILD override()"
+        print("CHILD override()")
 
 
 dad = Parent()

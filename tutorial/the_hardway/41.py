@@ -1,5 +1,5 @@
 import random
-from urllib import urlopen
+from urllib.request import urlopen
 import sys
 
 WORD_URL = "http://learncodethehardway.org/words.txt"
@@ -8,7 +8,7 @@ WORDS = []
 PHRASES = {
     "class %%%(%%%):": "Make a class named %%% is-a %%%.",
     "class %%%(object):\n\tdef __init__(self,***)": "class %%% has-a __init__ that takes self and *** parameters.",
-    "class %%%(ojbect):\n\tdef ***(self, @@@)": "class %%% has-a function named *** that takes self and @@@ parameters.",
+    "class %%%(object):\n\tdef ***(self, @@@)": "class %%% has-a function named *** that takes self and @@@ parameters.",
     "*** = %%%()": "Set *** to an instance of class %%%.",
     "***.***(@@@)": "From *** get the *** function, and call it with parameters self, @@@.",
     "***.*** = '***'": "From *** get the *** attribute and set it to '***'."
@@ -54,7 +54,7 @@ try:
     while True:
         snippets = PHRASES.keys()
 
-        #print snippets
+        print(snippets)
 
         random.shuffle(snippets)
 
@@ -65,10 +65,9 @@ try:
             if PHRASES_FIRST:
                 question, answer = answer, question
 
-            print question
+            print(question)
 
-            raw_input("> ")
-            print "ANSWER: %s\n\n" % answer
+            input("> ")
+            print("ANSWER: %s\n\n" % answer)
 except EOFError:
-    print "\nBye"
-
+    print("\nBye")
