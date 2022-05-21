@@ -1,0 +1,14 @@
+
+-- 建表SQL语句
+CREATE TABLE student (
+    s_id  INTEGER PRIMARY KEY AUTOINCREMENT,
+    s_name    TEXT NOT NULL,
+    s_sex INTEGER DEFAULT 1, -- 默认值1，1表示男，0表示女
+    s_birthday    TEXT
+)
+
+-- 插入数据SQL语句
+INSERT INTO student (s_name, s_sex, s_birthday) VALUES ('Tony', 1, '19731208');
+INSERT INTO student (s_name, s_sex, s_birthday) VALUES ('Tom', 1, '19701107');
+INSERT INTO student (s_name, s_sex, s_birthday) VALUES ('Zhao', 0, '19770511');
+INSERT INTO student (s_name, s_sex, s_birthday) VALUES ('张三', 1, '20000809');
