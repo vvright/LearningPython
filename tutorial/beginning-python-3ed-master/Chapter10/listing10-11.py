@@ -8,6 +8,7 @@ field_pat = re.compile(r'\[(.+?)\]')
 # We'll collect variables in this:
 scope = {}
 
+
 # This is used in re.sub:
 def replacement(match):
     code = match.group(1)
@@ -16,9 +17,10 @@ def replacement(match):
         return str(eval(code, scope))
     except SyntaxError:
         # Otherwise, execute the assignment in the same scope ...
-        exec code in scope
+        exec(code in scope)
         # ... and return an empty string:
         return ''
+
 
 # Get all the text as a single string:
 

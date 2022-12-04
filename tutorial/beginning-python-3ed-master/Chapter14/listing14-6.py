@@ -23,7 +23,7 @@ while True:
                 disconnected = True
 
             if disconnected:
-                print r.getpeername(), 'disconnected'
+                print(r.getpeername(), 'disconnected')
                 inputs.remove(r)
             else:
-                print data
+                print(data)

@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-#-*- encoding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 
 """
 书籍《Python股票量化交易入门到实践 》案例例程
@@ -15,20 +15,21 @@ import pandas_datareader.data as web
 import pandas as pd
 import datetime, time
 import talib
-import mpl_finance as mpf #替换 import matplotlib.finance as mpf
-import matplotlib.gridspec as gridspec#分割子图
+import mplfinance as mpf  # 替换 import matplotlib.finance as mpf
+import matplotlib.gridspec as gridspec  # 分割子图
 
 # use other chapters program
 from Code_7_for_stock_data import bs_k_data_stock, pro_daily_stock, json_to_str
 
-plt.rcParams['font.sans-serif']=['SimHei'] # 用来正常显示中文标签
-plt.rcParams['axes.unicode_minus']=False # 用来正常显示负号
+plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
+plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 
-#参数设置
-pd.set_option('display.expand_frame_repr',False) # False不允许换行
-pd.set_option('display.max_rows', 20) # 显示的最大行数
-pd.set_option('display.max_columns', 10) # 显示的最大列数
-pd.set_option('precision', 2) # 显示小数点后的位数
+# 参数设置
+pd.set_option('display.expand_frame_repr', False)  # False不允许换行
+pd.set_option('display.max_rows', 20)  # 显示的最大行数
+pd.set_option('display.max_columns', 10)  # 显示的最大列数
+pd.set_option('precision', 2)  # 显示小数点后的位数
+
 
 ###########################################  decorator   ############################################################
 
@@ -41,18 +42,19 @@ class DefTypesPool():
         def decorator(f):
             self.routes[types_str] = f
             return f
+
         return decorator
 
     def route_output(self, path):
-        #print(u"output [%s] function:" % path)
+        # print(u"output [%s] function:" % path)
         function_val = self.routes.get(path)
         if function_val:
             return function_val
         else:
             raise ValueError('Route "{}"" has not been registered'.format(path))
 
-class MplTypesDraw():
 
+class MplTypesDraw():
     mpl = DefTypesPool()
 
     @mpl.route_types(u"line")
@@ -66,15 +68,16 @@ class MplTypesDraw():
         # 绘制ochl图——Kline
         # 方案一
         mpf.candlestick2_ochl(graph, df_dat['Open'], df_dat['Close'], df_dat['High'], df_dat['Low'], width=0.5,
-                              colorup='r', colordown='g') # 绘制K线走势
+                              colorup='r', colordown='g')  # 绘制K线走势
         # 方案二
-        ohlc = list(zip(np.arange(0,len(df_index)),df_dat['Open'], df_dat['Close'], df_dat['High'], df_dat['Low'])) # 使用zip方法生成数据列表
-        mpf.candlestick_ochl(graph, ohlc, width=0.2, colorup='r', colordown='g', alpha=1.0) # 绘制K线走势
+        ohlc = list(zip(np.arange(0, len(df_index)), df_dat['Open'], df_dat['Close'], df_dat['High'],
+                        df_dat['Low']))  # 使用zip方法生成数据列表
+        mpf.candlestick_ochl(graph, ohlc, width=0.2, colorup='r', colordown='g', alpha=1.0)  # 绘制K线走势
 
     @mpl.route_types(u"bar")
     def bar_plot(df_index, df_dat, graph):
         # 绘制bar图——Volume
-        #graph.bar(np.arange(0, len(df_index)), df_dat['Volume'], \
+        # graph.bar(np.arange(0, len(df_index)), df_dat['Volume'], \
         #         color=['g' if df_dat['Open'][x] > df_dat['Close'][x] else 'r' for x in range(0,len(df_index))])
 
         graph.bar(np.arange(0, len(df_index)), df_dat['bar_red'], facecolor='red')
@@ -93,13 +96,13 @@ class MplTypesDraw():
             for kl_index, today in val['andata'].iterrows():
                 x_posit = df_index.get_loc(kl_index)
                 graph.annotate(u"{}\n{}".format(key, today.name.strftime("%m.%d")),
-                                   xy=(x_posit, today[val['xy_y']]),
-                                   xycoords='data',
-                                   xytext=(val['xytext'][0], val['xytext'][1]),
-                                   va=val['va'],  # 点在标注下方
-                                   textcoords='offset points',
-                                   fontsize=val['fontsize'],
-                                   arrowprops=val['arrow'])
+                               xy=(x_posit, today[val['xy_y']]),
+                               xycoords='data',
+                               xytext=(val['xytext'][0], val['xytext'][1]),
+                               va=val['va'],  # 点在标注下方
+                               textcoords='offset points',
+                               fontsize=val['fontsize'],
+                               arrowprops=val['arrow'])
 
     @mpl.route_types(u"filltrade")
     def filltrade_plot(df_index, df_dat, graph):
@@ -110,42 +113,43 @@ class MplTypesDraw():
         bs_singal = list_signal[list_signal != 0]
 
         skip_days = False
-        for kl_index, value in bs_singal.iteritems(): # iteritems以迭代器形式返回
-            if (value == 1) and (skip_days == False) :
+        for kl_index, value in bs_singal.iteritems():  # iteritems以迭代器形式返回
+            if (value == 1) and (skip_days == False):
                 start = df_index.get_loc(kl_index)
                 skip_days = True
-            elif (value == -1) and (skip_days == True) :
+            elif (value == -1) and (skip_days == True):
                 end = df_index.get_loc(kl_index) + 1  # 加1用于匹配[start:end]选取到end值
                 skip_days = False
 
-                if df_dat['jdval'][end-1] < df_dat['jdval'][start]: # 赔钱显示绿色
+                if df_dat['jdval'][end - 1] < df_dat['jdval'][start]:  # 赔钱显示绿色
                     graph.fill_between(np.arange(start, end), 0, df_dat['jdval'][start:end], color='green', alpha=0.38)
                     is_win = False
                 else:  # 赚钱显示红色
                     graph.fill_between(np.arange(start, end), 0, df_dat['jdval'][start:end], color='red', alpha=0.38)
                     is_win = True
                 graph.annotate('获利\n' if is_win else '亏损\n',
-                             xy=(end, df_dat['jdval'].asof(kl_index)),
-                             xytext=(df_dat['xytext'][0], df_dat['xytext'][1]),
-                             xycoords='data',
-                             va=df_dat['va'], # 点在标注下方
-                             textcoords='offset points',
-                             fontsize=df_dat['fontsize'],
-                             arrowprops=df_dat['arrow'])
+                               xy=(end, df_dat['jdval'].asof(kl_index)),
+                               xytext=(df_dat['xytext'][0], df_dat['xytext'][1]),
+                               xycoords='data',
+                               va=df_dat['va'],  # 点在标注下方
+                               textcoords='offset points',
+                               fontsize=df_dat['fontsize'],
+                               arrowprops=df_dat['arrow'])
         # 整个时间序列填充为底色blue 透明度alpha小于后标注区间颜色
         graph.fill_between(np.arange(0, len(df_index)), 0, df_dat['jdval'], color='blue', alpha=.08)
 
-class MplVisualIf(MplTypesDraw): # matplotlib Visualization interface
+
+class MplVisualIf(MplTypesDraw):  # matplotlib Visualization interface
 
     def __init__(self):
         MplTypesDraw.__init__(self)
 
     def fig_creat(self, **kwargs):
-        if 'figsize' in kwargs.keys():# 创建fig对象
+        if 'figsize' in kwargs.keys():  # 创建fig对象
             self.fig = plt.figure(figsize=kwargs['figsize'], dpi=100, facecolor="white")
         else:
             self.fig = plt.figure(figsize=(14, 7), dpi=100, facecolor="white")
-        self.graph = self.fig.add_subplot(1, 1, 1) # 创建子图
+        self.graph = self.fig.add_subplot(1, 1, 1)  # 创建子图
         self.fig.autofmt_xdate(rotation=45)  # 避免x轴日期刻度标签的重叠 将每个ticker标签倾斜45度
 
     def fig_config(self, **kwargs):
@@ -157,25 +161,26 @@ class MplVisualIf(MplTypesDraw): # matplotlib Visualization interface
             self.graph.set_xlabel(u"日期")
         self.graph.set_title(kwargs['title'])
         self.graph.set_ylabel(kwargs['ylabel'])
-        self.graph.set_xlim(0, len(self.index)) # 设置x轴的范围
+        self.graph.set_xlim(0, len(self.index))  # 设置x轴的范围
 
-        if 'ylim' in kwargs.keys(): # 设置y轴的范围
+        if 'ylim' in kwargs.keys():  # 设置y轴的范围
             bottom_lim = self.graph.get_ylim()[0]
             top_lim = self.graph.get_ylim()[1]
             range_lim = top_lim - bottom_lim
-            self.graph.set_ylim(bottom_lim+range_lim*kwargs['ylim'][0],
-                                top_lim+range_lim*kwargs['ylim'][1])
+            self.graph.set_ylim(bottom_lim + range_lim * kwargs['ylim'][0],
+                                top_lim + range_lim * kwargs['ylim'][1])
 
-        if 'xticks' in kwargs.keys(): # X轴刻度设定
+        if 'xticks' in kwargs.keys():  # X轴刻度设定
             self.graph.set_xticks(range(0, len(self.index), kwargs['xticks']))
         else:
-            self.graph.set_xticks(range(0, len(self.index), 15)) # 默认每15天标一个日期
-        if 'xticklabels' in kwargs.keys(): # 标签设置为日期
+            self.graph.set_xticks(range(0, len(self.index), 15))  # 默认每15天标一个日期
+        if 'xticklabels' in kwargs.keys():  # 标签设置为日期
             self.graph.set_xticklabels([self.index.strftime(kwargs['xticklabels'])[index] \
                                         for index in self.graph.get_xticks()])
         else:
             self.graph.set_xticklabels([self.index.strftime('%Y-%m-%d')[index] \
                                         for index in self.graph.get_xticks()])
+
     def fig_show(self, **kwargs):
         plt.show()
 
@@ -189,7 +194,9 @@ class MplVisualIf(MplTypesDraw): # matplotlib Visualization interface
         self.fig_config(**kwargs)
         self.fig_show(**kwargs)
 
+
 app = MplVisualIf()
+
 
 ###########################################  basic   ################################################################
 
@@ -228,10 +235,11 @@ def draw_kline_chart(stock_dat):
 
     app.fig_output(**layout_dict)
 
+
 def draw_volume_chart(stock_dat):
     # 绘制成交量图
-    bar_red = np.where(stock_dat.Open < stock_dat.Close,  stock_dat.Volume, 0) # 绘制BAR>0 柱状图
-    bar_green = np.where(stock_dat.Open > stock_dat.Close,  stock_dat.Volume, 0) # 绘制BAR<0 柱状图
+    bar_red = np.where(stock_dat.Open < stock_dat.Close, stock_dat.Volume, 0)  # 绘制BAR>0 柱状图
+    bar_green = np.where(stock_dat.Open > stock_dat.Close, stock_dat.Volume, 0)  # 绘制BAR<0 柱状图
 
     layout_dict = {'figsize': (14, 5),
                    'index': stock_dat.index,
@@ -244,6 +252,7 @@ def draw_volume_chart(stock_dat):
                    'ylabel': u"成交量"}
 
     app.fig_output(**layout_dict)
+
 
 def draw_sma_chart(stock_dat):
     # 绘制移动平均线图
@@ -280,8 +289,9 @@ def draw_sma_chart(stock_dat):
                    'xlabel': u"日期",
                    'xticks': 15,
                    'legend': u'best',
-                   'xticklabels':'%Y-%m-%d'}
+                   'xticklabels': '%Y-%m-%d'}
     app.fig_output(**layout_dict)
+
 
 def draw_kdj_chart(stock_dat):
     # 绘制KDJ图
@@ -323,8 +333,9 @@ def draw_kdj_chart(stock_dat):
                    'legend': u'best'}
     app.fig_output(**layout_dict)
 
+
 def draw_kdj1_chart(stock_dat):
-    #绘制KDJ-for in
+    # 绘制KDJ-for in
     xd = 9 - 1
     date = stock_dat.index.to_series()
     RSV = pd.Series(np.zeros(len(date) - xd), index=date.index[xd:])
@@ -334,7 +345,8 @@ def draw_kdj1_chart(stock_dat):
 
     for day_ind in range(xd, len(stock_dat.index)):
         RSV[date[day_ind]] = (stock_dat.Close[day_ind] - stock_dat.Low[day_ind - xd:day_ind + 1].min()) / \
-                             (stock_dat.High[day_ind - xd:day_ind + 1].max() - stock_dat.Low[day_ind - xd:day_ind + 1].min()) * 100
+                             (stock_dat.High[day_ind - xd:day_ind + 1].max() - stock_dat.Low[
+                                                                               day_ind - xd:day_ind + 1].min()) * 100
         if day_ind > xd:
             index = day_ind - xd
             Kvalue[index] = 2.0 / 3 * Kvalue[index - 1] + RSV[date[day_ind]] / 3
@@ -357,17 +369,19 @@ def draw_kdj1_chart(stock_dat):
                    'legend': u'best'}
     app.fig_output(**layout_dict)
 
+
 def draw_macd_chart(stock_dat):
     # 绘制MACD
 
-    macd_dif = stock_dat['Close'].ewm(span=12, adjust=False).mean() - stock_dat['Close'].ewm(span=26, adjust=False).mean()
+    macd_dif = stock_dat['Close'].ewm(span=12, adjust=False).mean() - stock_dat['Close'].ewm(span=26,
+                                                                                             adjust=False).mean()
     macd_dea = macd_dif.ewm(span=9, adjust=False).mean()
     macd_bar = 2 * (macd_dif - macd_dea)
 
-    bar_red = np.where(macd_bar > 0,  macd_bar, 0) # 绘制BAR>0 柱状图
-    bar_green = np.where(macd_bar < 0,  macd_bar, 0) # 绘制BAR<0 柱状图
+    bar_red = np.where(macd_bar > 0, macd_bar, 0)  # 绘制BAR>0 柱状图
+    bar_green = np.where(macd_bar < 0, macd_bar, 0)  # 绘制BAR<0 柱状图
 
-    #macd_dif, macd_dea, macd_bar = talib.MACD(stock_dat['Close'].values, fastperiod=12, slowperiod=26, signalperiod=9)
+    # macd_dif, macd_dea, macd_bar = talib.MACD(stock_dat['Close'].values, fastperiod=12, slowperiod=26, signalperiod=9)
     """
     fig = plt.figure(figsize=(14, 5), dpi=100, facecolor="white") # 创建fig对象
     graph_macd = fig.add_subplot(1,1,1) # 创建子图
@@ -401,13 +415,14 @@ def draw_macd_chart(stock_dat):
 
     app.fig_output(**layout_dict)
 
+
 ###########################################  advance ################################################################
 def draw_cross_annotate(stock_dat):
     # 绘制均线金叉和死叉
 
-    #graph_sma.legend(loc='upper left')
-    #graph_range = stock_dat.High.max() - stock_dat.Low.min()
-    #graph_sma.set_ylim(stock_dat.Low.min() - graph_range * 0.25, stock_dat.High.max()) # 设置y轴的范围
+    # graph_sma.legend(loc='upper left')
+    # graph_range = stock_dat.High.max() - stock_dat.Low.min()
+    # graph_sma.set_ylim(stock_dat.Low.min() - graph_range * 0.25, stock_dat.High.max()) # 设置y轴的范围
 
     # 绘制移动平均线图
     stock_dat['Ma20'] = stock_dat.Close.rolling(window=20).mean()  # pd.rolling_mean(stock_dat.Close,window=20)
@@ -432,12 +447,12 @@ def draw_cross_annotate(stock_dat):
                                  'annotate':
                                      {u'死叉':
                                           {'andata': down_cross,
-                                           'va':'top',
+                                           'va': 'top',
                                            'xy_y': 'Ma20',
-                                           'xytext':(-30,-stock_dat['Ma20'].mean()*0.5),
+                                           'xytext': (-30, -stock_dat['Ma20'].mean() * 0.5),
                                            'fontsize': 8,
                                            'arrow': dict(facecolor='green', shrink=0.1)
-                                          },
+                                           },
                                       u'金叉':
                                           {'andata': up_cross,
                                            'va': 'bottom',
@@ -454,43 +469,45 @@ def draw_cross_annotate(stock_dat):
                    'legend': u'best'}
     app.fig_output(**layout_dict)
 
+
 def apply_gap(changeRatio, preLow, preHigh, Low, High, threshold):
     jump_power = 0
     if (changeRatio > 0) and ((Low - preHigh) > threshold):
         # 向上跳空 (今最低-昨最高)/阈值
-        jump_power = (Low - preHigh) / threshold # 正数
+        jump_power = (Low - preHigh) / threshold  # 正数
     elif (changeRatio < 0) and ((preLow - High) > threshold):
         # 向下跳空 (今最高-昨最低)/阈值
-        jump_power = (High - preLow) / threshold # 负数
+        jump_power = (High - preLow) / threshold  # 负数
     return jump_power
+
 
 def draw_gap_annotate(stock_dat):
     # 绘制K线图
     # 挖掘跳空缺口
-    jump_threshold = stock_dat.Close.median()*0.01 # 跳空阈值 收盘价中位数*0.01
+    jump_threshold = stock_dat.Close.median() * 0.01  # 跳空阈值 收盘价中位数*0.01
     stock_dat['changeRatio'] = stock_dat.Close.pct_change() * 100  # 计算涨/跌幅 (今收-昨收)/昨收*100% 判断向上跳空缺口/向下跳空缺口
     stock_dat['preLow'] = stock_dat.Low.shift(1)  # 增加昨日最低价序列
-    stock_dat['preHigh'] = stock_dat.High.shift(1) # 增加昨日最高价序列
-    stock_dat = stock_dat.assign(jump_power = 0)
+    stock_dat['preHigh'] = stock_dat.High.shift(1)  # 增加昨日最高价序列
+    stock_dat = stock_dat.assign(jump_power=0)
 
-    #for kl_index in np.arange(0, df_stockload.shape[0]):
+    # for kl_index in np.arange(0, df_stockload.shape[0]):
     #    today = df_stockload.iloc[kl_index]
-    #note: A value is trying to be set on a copy of a slice from a DataFrame
-    #involve change the value of df_stockload but iloc just copy the dataframe
+    # note: A value is trying to be set on a copy of a slice from a DataFrame
+    # involve change the value of df_stockload but iloc just copy the dataframe
 
-    stock_dat['jump_power'] = stock_dat.apply(lambda row:apply_gap(row['changeRatio'],
-                                                     row['preLow'],
-                                                     row['preHigh'],
-                                                     row['Low'],
-                                                     row['High'],
-                                                     jump_threshold),
-                                                     axis = 1)
+    stock_dat['jump_power'] = stock_dat.apply(lambda row: apply_gap(row['changeRatio'],
+                                                                    row['preLow'],
+                                                                    row['preHigh'],
+                                                                    row['Low'],
+                                                                    row['High'],
+                                                                    jump_threshold),
+                                              axis=1)
     up_jump = stock_dat[(stock_dat.changeRatio > 0) & (stock_dat.jump_power > 0)]
     down_jump = stock_dat[(stock_dat.changeRatio < 0) & (stock_dat.jump_power < 0)]
 
     layout_dict = {'figsize': (14, 7),
                    'index': stock_dat.index,
-                   'draw_kind': {'ochl':# 绘制K线图
+                   'draw_kind': {'ochl':  # 绘制K线图
                                      {'Open': stock_dat.Open,
                                       'Close': stock_dat.Close,
                                       'High': stock_dat.High,
@@ -501,16 +518,16 @@ def draw_gap_annotate(stock_dat):
                                           {'andata': up_jump,
                                            'va': 'top',
                                            'xy_y': 'preHigh',
-                                           'xytext': (0,-stock_dat['Close'].mean() * 0.5),
-                                           'fontsize':  8,
+                                           'xytext': (0, -stock_dat['Close'].mean() * 0.5),
+                                           'fontsize': 8,
                                            'arrow': dict(facecolor='red', shrink=0.1)
                                            },
                                       u'down':
                                           {'andata': down_jump,
                                            'va': 'bottom',
                                            'xy_y': 'preLow',
-                                           'xytext': (0,stock_dat['Close'].mean() * 0.5),
-                                           'fontsize':  8,
+                                           'xytext': (0, stock_dat['Close'].mean() * 0.5),
+                                           'fontsize': 8,
                                            'arrow': dict(facecolor='green', shrink=0.1)
                                            }
                                       }
@@ -519,7 +536,7 @@ def draw_gap_annotate(stock_dat):
                    'ylabel': u"价格"}
     app.fig_output(**layout_dict)
 
-    print(up_jump.filter(['jump_power', 'preClose', 'changeRatio', 'Close', 'Volume'])) # 向上跳空缺口 按顺序显示列
+    print(up_jump.filter(['jump_power', 'preClose', 'changeRatio', 'Close', 'Volume']))  # 向上跳空缺口 按顺序显示列
     """
                 jump_power  changeRatio  Close    Volume
     Date                                                
@@ -528,7 +545,7 @@ def draw_gap_annotate(stock_dat):
     2019-04-09       11.48        10.00  51.93  1.08e+07
     2019-04-10        6.40         9.99  57.12  3.23e+08
     """
-    print(down_jump.filter(['jump_power', 'preClose', 'changeRatio', 'Close', 'Volume'])) # 向下跳空缺口 按顺序显示列
+    print(down_jump.filter(['jump_power', 'preClose', 'changeRatio', 'Close', 'Volume']))  # 向下跳空缺口 按顺序显示列
     """
                 jump_power  changeRatio  Close    Volume
     Date                                                
@@ -538,41 +555,43 @@ def draw_gap_annotate(stock_dat):
     format = lambda x: '%.2f' % x
     up_jump = up_jump[(np.abs(up_jump.changeRatio) > 2) & (up_jump.Volume > up_jump.Volume.median())]  # abs取绝对值
     up_jump = up_jump.applymap(format)  # 处理后数据为str
-    print(up_jump.filter(['jump_power', 'preClose', 'changeRatio', 'Close', 'Volume'])) # 按顺序只显示该列
+    print(up_jump.filter(['jump_power', 'preClose', 'changeRatio', 'Close', 'Volume']))  # 按顺序只显示该列
     """
                jump_power changeRatio  Close        Volume
     Date                                                  
     2019-01-09       1.58        3.22  37.51  105806077.00
     2019-04-10       6.40        9.99  57.12  322875034.00
     """
-    down_jump = down_jump[(np.abs(down_jump.changeRatio) > 2) & (down_jump.Volume > down_jump.Volume.median())]  # abs取绝对值
+    down_jump = down_jump[
+        (np.abs(down_jump.changeRatio) > 2) & (down_jump.Volume > down_jump.Volume.median())]  # abs取绝对值
     down_jump = down_jump.applymap(format)  # 处理后数据为str
-    print(down_jump.filter(['jump_power', 'preClose', 'changeRatio', 'Close', 'Volume'])) # 按顺序只显示该列
+    print(down_jump.filter(['jump_power', 'preClose', 'changeRatio', 'Close', 'Volume']))  # 按顺序只显示该列
     """
     Empty DataFrame
     Columns: [jump_power, changeRatio, Close, Volume]
     Index: []
     """
 
+
 def draw_kweek_chart(stock_dat):
-    #周期重采样
-    #rule='W'周 how=last()最后一天 closed='right'右闭合 label='right'右标签
-    #print(stock_dat.resample('W', closed='right', label='right').last().head())
+    # 周期重采样
+    # rule='W'周 how=last()最后一天 closed='right'右闭合 label='right'右标签
+    # print(stock_dat.resample('W', closed='right', label='right').last().head())
 
     Freq_T = 'W-FRI'
-    #print(stock_dat.resample(Freq_T, closed='right', label='right').last().head())
+    # print(stock_dat.resample(Freq_T, closed='right', label='right').last().head())
 
-    #周线Close等于一周中最后一个交易日Close
+    # 周线Close等于一周中最后一个交易日Close
     week_dat = stock_dat.resample(Freq_T, closed='right', label='right').last()
-    #周线Open等于一周中第一个交易日Open
+    # 周线Open等于一周中第一个交易日Open
     week_dat.Open = stock_dat.Open.resample(Freq_T, closed='right', label='right').first()
-    #周线High等于一周中High的最大值
+    # 周线High等于一周中High的最大值
     week_dat.High = stock_dat.High.resample(Freq_T, closed='right', label='right').max()
-    #周线Low等于一周中Low的最小值
+    # 周线Low等于一周中Low的最小值
     week_dat.Low = stock_dat.Low.resample(Freq_T, closed='right', label='right').min()
-    #周线Volume等于一周中Volume的总和
+    # 周线Volume等于一周中Volume的总和
     week_dat.Volume = stock_dat.Volume.resample(Freq_T, closed='right', label='right').sum()
-    #print(week_dat.head())
+    # print(week_dat.head())
 
     layout_dict = {'figsize': (14, 7),
                    'index': week_dat.index,
@@ -586,6 +605,7 @@ def draw_kweek_chart(stock_dat):
                    'title': u"000651 格力电器-周K线",
                    'ylabel': u"价格"}
     app.fig_output(**layout_dict)
+
 
 def draw_fibonacci_chart(stock_dat):
     # 黄金分割线
@@ -605,42 +625,42 @@ def draw_fibonacci_chart(stock_dat):
     print(max_df)
     print(min_df)
 
-    #graph_kline.legend(['0.382', '0.618'], loc='upper left')
+    # graph_kline.legend(['0.382', '0.618'], loc='upper left')
 
     # 绘制K线图+支撑/阻力
     layout_dict = {'figsize': (14, 7),
                    'index': stock_dat.index,
-                   'draw_kind': {'ochl':# 绘制K线图
+                   'draw_kind': {'ochl':  # 绘制K线图
                                      {'Open': stock_dat.Open,
                                       'Close': stock_dat.Close,
                                       'High': stock_dat.High,
                                       'Low': stock_dat.Low
                                       },
-                                'hline':
-                                    {'Fib_382':
-                                         {'pos': Fib_382,
-                                          'c': 'r'
-                                         },
-                                     'Fib_618':
-                                         {'pos': Fib_618,
-                                          'c': 'g'
-                                         }
-                                     },
+                                 'hline':
+                                     {'Fib_382':
+                                          {'pos': Fib_382,
+                                           'c': 'r'
+                                           },
+                                      'Fib_618':
+                                          {'pos': Fib_618,
+                                           'c': 'g'
+                                           }
+                                      },
                                  'annotate':
                                      {u'max':
                                           {'andata': max_df,
                                            'va': 'top',
                                            'xy_y': 'High',
-                                           'xytext': (-30,stock_dat.Close.mean()),
-                                           'fontsize':  8,
+                                           'xytext': (-30, stock_dat.Close.mean()),
+                                           'fontsize': 8,
                                            'arrow': dict(facecolor='red', shrink=0.1)
                                            },
                                       u'min':
                                           {'andata': min_df,
                                            'va': 'bottom',
                                            'xy_y': 'Low',
-                                           'xytext': (-30,-stock_dat.Close.mean()),
-                                           'fontsize':  8,
+                                           'xytext': (-30, -stock_dat.Close.mean()),
+                                           'fontsize': 8,
                                            'arrow': dict(facecolor='green', shrink=0.1)
                                            }
                                       }
@@ -650,6 +670,7 @@ def draw_fibonacci_chart(stock_dat):
                    'legend': u'best'}
     app.fig_output(**layout_dict)
 
+
 ###########################################  talib  ################################################################
 
 def draw_tasma_chart(stock_dat):
@@ -658,13 +679,13 @@ def draw_tasma_chart(stock_dat):
     stock_dat['SMA20'] = talib.SMA(stock_dat.Close, timeperiod=20)
     stock_dat['SMA30'] = talib.SMA(stock_dat.Close, timeperiod=30)
     stock_dat['SMA60'] = talib.SMA(stock_dat.Close, timeperiod=60)
-    stock_dat['SMA20'].fillna(method='bfill',inplace=True)
-    stock_dat['SMA30'].fillna(method='bfill',inplace=True)
-    stock_dat['SMA60'].fillna(method='bfill',inplace=True)
+    stock_dat['SMA20'].fillna(method='bfill', inplace=True)
+    stock_dat['SMA30'].fillna(method='bfill', inplace=True)
+    stock_dat['SMA60'].fillna(method='bfill', inplace=True)
 
-    #stock_dat['Ma20'] = talib.MA(stock_dat.Close, timeperiod=20, matype=0)
-    #stock_dat['Ma30'] = talib.MA(stock_dat.Close, timeperiod=30, matype=1)
-    #stock_dat['Ma60'] = talib.MA(stock_dat.Close, timeperiod=60, matype=2)
+    # stock_dat['Ma20'] = talib.MA(stock_dat.Close, timeperiod=20, matype=0)
+    # stock_dat['Ma30'] = talib.MA(stock_dat.Close, timeperiod=30, matype=1)
+    # stock_dat['Ma60'] = talib.MA(stock_dat.Close, timeperiod=60, matype=2)
 
     """
     fig = plt.figure(figsize=(14, 5), dpi=100, facecolor="white")#创建fig对象
@@ -694,17 +715,18 @@ def draw_tasma_chart(stock_dat):
                    'legend': u'best'}
     app.fig_output(**layout_dict)
 
+
 def draw_tamacd_chart(stock_dat):
     # 绘制talib MACD
 
     macd_dif, macd_dea, macd_bar = talib.MACD(stock_dat['Close'].values, fastperiod=12, slowperiod=26, signalperiod=9)
 
-    #RuntimeWarning: invalid value encountered in greater
-    #RuntimeWarning: invalid value encountered in less
-    #solve the problem
-    macd_dif[np.isnan(macd_dif)] ,macd_dea[np.isnan(macd_dea)], macd_bar[np.isnan(macd_bar)]= 0, 0, 0
-    bar_red = np.where(macd_bar > 0,  2 * macd_bar, 0)# 绘制BAR>0 柱状图
-    bar_green = np.where(macd_bar < 0,  2 * macd_bar, 0)# 绘制BAR<0 柱状图
+    # RuntimeWarning: invalid value encountered in greater
+    # RuntimeWarning: invalid value encountered in less
+    # solve the problem
+    macd_dif[np.isnan(macd_dif)], macd_dea[np.isnan(macd_dea)], macd_bar[np.isnan(macd_bar)] = 0, 0, 0
+    bar_red = np.where(macd_bar > 0, 2 * macd_bar, 0)  # 绘制BAR>0 柱状图
+    bar_green = np.where(macd_bar < 0, 2 * macd_bar, 0)  # 绘制BAR<0 柱状图
     """
     fig = plt.figure(figsize=(14, 5), dpi=100, facecolor="white")#创建fig对象
     graph_macd = fig.add_subplot(1,1,1) #创建子图
@@ -737,12 +759,14 @@ def draw_tamacd_chart(stock_dat):
                    'legend': u'best'}
     app.fig_output(**layout_dict)
 
+
 def draw_takdj_chart(stock_dat):
     # 绘制talib KDJ
 
-    stock_dat['K'], stock_dat['D'] = talib.STOCH(stock_dat.High.values, stock_dat.Low.values, stock_dat.Close.values,\
-                                           fastk_period=9, slowk_period=3, slowk_matype=0, slowd_period=3, slowd_matype=0)
-    stock_dat['K'].fillna(0,inplace=True), stock_dat['D'].fillna(0,inplace=True)
+    stock_dat['K'], stock_dat['D'] = talib.STOCH(stock_dat.High.values, stock_dat.Low.values, stock_dat.Close.values, \
+                                                 fastk_period=9, slowk_period=3, slowk_matype=0, slowd_period=3,
+                                                 slowd_matype=0)
+    stock_dat['K'].fillna(0, inplace=True), stock_dat['D'].fillna(0, inplace=True)
     stock_dat['J'] = 3 * stock_dat['K'] - 2 * stock_dat['D']
     """
     fig = plt.figure(figsize=(14, 5), dpi=100, facecolor="white") # 创建fig对象
@@ -772,19 +796,21 @@ def draw_takdj_chart(stock_dat):
                    'legend': u'best'}
     app.fig_output(**layout_dict)
 
+
 def draw_takpattern_annotate(stock_dat):
     # 绘制 talib K线形态 乌云压顶
-    #CDL2CROWS = talib.CDL2CROWS(stock_dat.Open.values, stock_dat.High.values, stock_dat.Low.values,stock_dat.Close.values)
-    #CDLHAMMER = talib.CDLHAMMER(stock_dat.Open.values, stock_dat.High.values, stock_dat.Low.values,stock_dat.Close.values)
-    #CDLMORNINGSTAR = talib.CDLMORNINGSTAR(stock_dat.Open.values, stock_dat.High.values, stock_dat.Low.values,stock_dat.Close.values)
-    CDLDARKCLOUDCOVER = talib.CDLDARKCLOUDCOVER(stock_dat.Open.values, stock_dat.High.values, stock_dat.Low.values,stock_dat.Close.values)
+    # CDL2CROWS = talib.CDL2CROWS(stock_dat.Open.values, stock_dat.High.values, stock_dat.Low.values,stock_dat.Close.values)
+    # CDLHAMMER = talib.CDLHAMMER(stock_dat.Open.values, stock_dat.High.values, stock_dat.Low.values,stock_dat.Close.values)
+    # CDLMORNINGSTAR = talib.CDLMORNINGSTAR(stock_dat.Open.values, stock_dat.High.values, stock_dat.Low.values,stock_dat.Close.values)
+    CDLDARKCLOUDCOVER = talib.CDLDARKCLOUDCOVER(stock_dat.Open.values, stock_dat.High.values, stock_dat.Low.values,
+                                                stock_dat.Close.values)
 
     # 绘制K线图
-    pattern = stock_dat[(CDLDARKCLOUDCOVER == 100)|(CDLDARKCLOUDCOVER == -100)]
+    pattern = stock_dat[(CDLDARKCLOUDCOVER == 100) | (CDLDARKCLOUDCOVER == -100)]
 
     layout_dict = {'figsize': (14, 7),
                    'index': stock_dat.index,
-                   'draw_kind': {'ochl':# 绘制K线图
+                   'draw_kind': {'ochl':  # 绘制K线图
                                      {'Open': stock_dat.Open,
                                       'Close': stock_dat.Close,
                                       'High': stock_dat.High,
@@ -795,15 +821,17 @@ def draw_takpattern_annotate(stock_dat):
                                           {'andata': pattern,
                                            'va': 'bottom',
                                            'xy_y': 'High',
-                                           'xytext': (0,stock_dat['Close'].mean()),
+                                           'xytext': (0, stock_dat['Close'].mean()),
                                            'fontsize': 8,
-                                           'arrow': dict(arrowstyle='->',facecolor='blue', connectionstyle="arc3,rad=.2")
+                                           'arrow': dict(arrowstyle='->', facecolor='blue',
+                                                         connectionstyle="arc3,rad=.2")
                                            }
                                       }
                                  },
                    'title': u"000651 格力电器-日K线-CDLDARKCLOUDCOVER",
                    'ylabel': u"价格"}
     app.fig_output(**layout_dict)
+
 
 def talib_speed_example():
     # 对比效率上的差别
@@ -813,17 +841,17 @@ def talib_speed_example():
     start_a = time.perf_counter()
     talib.SMA(close_price, timeperiod=20)
     end_a = time.perf_counter()
-    print("Time talib：", end_a-start_a) # talib time consuming
+    print("Time talib：", end_a - start_a)  # talib time consuming
 
     start_p = time.perf_counter()
     df_random.rolling(20).mean()
     end_p = time.perf_counter()
-    print("Time pandas：", end_p-start_p) # Pandas time consuming
+    print("Time pandas：", end_p - start_p)  # Pandas time consuming
 
 
 class MultiGraphIf(MplTypesDraw):
-
     app = DefTypesPool()
+
     ##########################行情分析界面###############################
     @app.route_types(u"ochl")
     def ochl_graph(stock_dat, sub_graph, df_dat=None):  # prepare data
@@ -838,23 +866,23 @@ class MultiGraphIf(MplTypesDraw):
     @app.route_types(u"sma")
     def sma_graph(stock_dat, sub_graph, periods):  # prepare data
         for val in periods:
-            type_dict = {'SMA'+str(val): stock_dat.Close.rolling(window=val).mean()}
+            type_dict = {'SMA' + str(val): stock_dat.Close.rolling(window=val).mean()}
             view_function = MplTypesDraw.mpl.route_output(u"line")
             view_function(stock_dat.index, type_dict, sub_graph)
 
     @app.route_types(u"vol")
     def vol_graph(stock_dat, sub_graph, df_dat=None):  # prepare data
-        type_dict = {'bar_red': np.where(stock_dat.Open < stock_dat.Close, stock_dat.Volume, 0), # 绘制BAR>0 柱状图
-                     'bar_green': np.where(stock_dat.Open > stock_dat.Close, stock_dat.Volume, 0) # 绘制BAR<0 柱状图
+        type_dict = {'bar_red': np.where(stock_dat.Open < stock_dat.Close, stock_dat.Volume, 0),  # 绘制BAR>0 柱状图
+                     'bar_green': np.where(stock_dat.Open > stock_dat.Close, stock_dat.Volume, 0)  # 绘制BAR<0 柱状图
                      }
         view_function = MplTypesDraw.mpl.route_output(u"bar")
         view_function(stock_dat.index, type_dict, sub_graph)
 
-
     @app.route_types(u"macd")
     def macd_graph(stock_dat, sub_graph, df_dat=None):  # prepare data
 
-        macd_dif = stock_dat['Close'].ewm(span=12, adjust=False).mean() - stock_dat['Close'].ewm(span=26,                                                                                         adjust=False).mean()
+        macd_dif = stock_dat['Close'].ewm(span=12, adjust=False).mean() - stock_dat['Close'].ewm(span=26,
+                                                                                                 adjust=False).mean()
         macd_dea = macd_dif.ewm(span=9, adjust=False).mean()
         macd_bar = 2 * (macd_dif - macd_dea)
 
@@ -883,21 +911,22 @@ class MultiGraphIf(MplTypesDraw):
         type_dict = {'K': stock_dat.K,
                      'D': stock_dat.D,
                      'J': stock_dat.J
-                    }
+                     }
         view_function = MplTypesDraw.mpl.route_output(u"line")
         view_function(stock_dat.index, type_dict, sub_graph)
 
-
     def __init__(self, **kwargs):
         MplTypesDraw.__init__(self)
-        self.fig = plt.figure(figsize=kwargs['figsize'], dpi=100, facecolor="white")#创建fig对象
+        self.fig = plt.figure(figsize=kwargs['figsize'], dpi=100, facecolor="white")  # 创建fig对象
         self.graph_dict = {}
         self.graph_curr = []
 
         try:
             gs = gridspec.GridSpec(kwargs['nrows'], kwargs['ncols'],
-                                   left = kwargs['left'], bottom = kwargs['bottom'], right = kwargs['right'], top = kwargs['top'],
-                                   wspace = kwargs['wspace'], hspace = kwargs['hspace'], height_ratios = kwargs['height_ratios'])
+                                   left=kwargs['left'], bottom=kwargs['bottom'], right=kwargs['right'],
+                                   top=kwargs['top'],
+                                   wspace=kwargs['wspace'], hspace=kwargs['hspace'],
+                                   height_ratios=kwargs['height_ratios'])
         except:
             raise Exception("para error")
         else:
@@ -951,10 +980,10 @@ class MultiGraphIf(MplTypesDraw):
                 label.set_visible(False)
 
 
-if  __name__ == '__main__':
+if __name__ == '__main__':
 
     df_stockload = pro_daily_stock('000651.SZ', '20180601', '20190601')
-    #df_stockload = bs_k_data_stock("sz.000651", '2018-06-01', '2019-06-01') # 采用未复权数据
+    # df_stockload = bs_k_data_stock("sz.000651", '2018-06-01', '2019-06-01') # 采用未复权数据
     print(df_stockload.head(10))
     """
                  High    Low   Open  Close    Volume
@@ -1003,9 +1032,9 @@ if  __name__ == '__main__':
     if False:
         draw_takpattern_annotate(df_stockload.copy(deep=True))  # talib K-line pattern标注
     if False:
-        talib_speed_example() # 对比效率上的差别
+        talib_speed_example()  # 对比效率上的差别
 
-    if True: # 自定义显示界面
+    if True:  # 自定义显示界面
 
         layout_dict = {'figsize': (12, 6),
                        'nrows': 4,
@@ -1054,4 +1083,3 @@ if  __name__ == '__main__':
 
         draw_stock = MultiGraphIf(**layout_dict)
         draw_stock.graph_run(df_stockload, **subplots_dict)
-

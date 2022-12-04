@@ -1,6 +1,7 @@
 # database.py
 import sys, shelve
 
+
 def store_person(db):
     """
     Query user for data and store it in the shelf object
@@ -11,6 +12,7 @@ def store_person(db):
     person['age'] = input('Enter age: ')
     person['phone'] = input('Enter phone number: ')
     db[pid] = person
+
 
 def lookup_person(db):
     """
@@ -23,6 +25,7 @@ def lookup_person(db):
 
     print(field.capitalize() + ':', db[pid][field])
 
+
 def print_help():
     print('The available commands are:')
     print('store  : Stores information about a person')
@@ -30,17 +33,19 @@ def print_help():
     print('quit   : Save changes and exit')
     print('?      : Prints this message')
 
+
 def enter_command():
     cmd = input('Enter command (? for help): ')
     cmd = cmd.strip().lower()
     return cmd
 
+
 def main():
-    database = shelve.open('C:\\database.dat') # You may want to change this name
+    database = shelve.open('C:\\database.dat')  # You may want to change this name
     try:
         while True:
             cmd = enter_command()
-            if  cmd == 'store':
+            if cmd == 'store':
                 store_person(database)
             elif cmd == 'lookup':
                 lookup_person(database)
@@ -51,4 +56,6 @@ def main():
     finally:
         database.close()
 
-if name == '__main__': main()
+
+if __name__ == '__main__':
+    main()

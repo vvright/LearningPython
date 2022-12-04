@@ -4,7 +4,6 @@
 # another dictionary with the keys 'phone' and 'addr' referring to their phone
 # number and address, respectively.
 people = {
-
     'Alice': {
         'phone': '2341',
         'addr': 'Foo drive 23'
@@ -19,7 +18,6 @@ people = {
         'phone': '3158',
         'addr': 'Baz avenue 90'
     }
-
 }
 
 # Descriptive labels for the phone number and address. These will be used
@@ -35,9 +33,13 @@ name = input('Name: ')
 request = input('Phone number (p) or address (a)? ')
 
 # Use the correct key:
-if request == 'p': key = 'phone'
-if request == 'a': key = 'addr'
+if request == 'p':
+    key = 'phone'
+if request == 'a':
+    key = 'addr'
 
 # Only try to print information if the name is a valid key in
 # our dictionary:
-if name in people: print("{}'s {} is {}.".format(name, labels[key], people[name][key]))
+if name in people:
+    print("{}'s {} is {}.".format(name, labels[key], people[name][key]))
+#   print(f"{name}'s {labels[key]} is {people[name][key]}.")

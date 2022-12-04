@@ -1,8 +1,8 @@
-# numberlines.py
+# number lines.py
 
 import fileinput
 
 for line in fileinput.input(inplace=True):
     line = line.rstrip()
-    num  = fileinput.lineno()
+    num = fileinput.lineno()
     print('{:<50} # {:2d}'.format(line, num))

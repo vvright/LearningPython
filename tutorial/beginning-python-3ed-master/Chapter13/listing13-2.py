@@ -1,4 +1,5 @@
-import sqlite3, sys
+import sqlite3
+import sys
 
 conn = sqlite3.connect('food.db')
 curs = conn.cursor()

@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-#-*- encoding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 
 """
 书籍《Python股票量化交易入门到实践 》案例例程
@@ -10,14 +10,14 @@
 # 第五章 第三方库Matplotlib快速入门
 
 import matplotlib.pyplot as plt
-import mplfinance as mpf #替换 import matplotlib.finance as mpf
+import mplfinance as mpf  # 替换 import matplotlib.finance as mpf
 import numpy as np
 import pandas as pd
 
 # 正常显示画图时出现的中文和负号
-#from pylab import mpl
-#mpl.rcParams['font.sans-serif']=['SimHei']
-#mpl.rcParams['axes.unicode_minus']=False
+# from pylab import mpl
+# mpl.rcParams['font.sans-serif']=['SimHei']
+# mpl.rcParams['axes.unicode_minus']=False
 
 # 5.1 两种绘图方式的区分
 if False:
@@ -26,9 +26,9 @@ if False:
     plt.figure(figsize=(12, 8))
 
     # 生成数据
-    start_val = 0 # 开始值
-    stop_val = 10 # 终值
-    num_val = 1000 # 样本
+    start_val = 0  # 开始值
+    stop_val = 10  # 终值
+    num_val = 1000  # 样本
     x = np.linspace(start_val, stop_val, num_val)
     y = np.sin(x)
 
@@ -65,24 +65,24 @@ if False:
                  })
     """
     # 调整坐标轴范围
-    x_min = 0 # x轴数值范围最小值
-    x_max = 10 # x轴数值范围最大值
-    y_min = -1.5 # y轴数值范围最小值
-    y_max = 1.5 # y轴数值范围最小值
+    x_min = 0  # x轴数值范围最小值
+    x_max = 10  # x轴数值范围最大值
+    y_min = -1.5  # y轴数值范围最小值
+    y_max = 1.5  # y轴数值范围最小值
     plt.xlim(x_min, x_max)
     plt.ylim(y_min, y_max)
 
-    #设置轴标签
-    plt.xlabel('X 轴',fontsize=15)
-    plt.ylabel('Y 轴',fontsize=15)
+    # 设置轴标签
+    plt.xlabel('X 轴', fontsize=15)
+    plt.ylabel('Y 轴', fontsize=15)
 
     # 设置坐标轴标签
-    x_location = np.arange(0,10,2) # x轴坐标位置
-    x_labels = ['2019-01-01','2019-02-01','2019-03-01','2019-04-01','2019-05-01'] # x轴坐标显示标签
-    y_location = np.arange(-1,1.5,1) # y轴坐标位置
-    y_labels = [u'最小值',u'零值',u'最大值'] # y轴坐标显示标签
-    plt.xticks(x_location,x_labels,rotation=45,fontsize=15)
-    plt.yticks(y_location,y_labels,fontsize=15)
+    x_location = np.arange(0, 10, 2)  # x轴坐标位置
+    x_labels = ['2019-01-01', '2019-02-01', '2019-03-01', '2019-04-01', '2019-05-01']  # x轴坐标显示标签
+    y_location = np.arange(-1, 1.5, 1)  # y轴坐标位置
+    y_labels = [u'最小值', u'零值', u'最大值']  # y轴坐标显示标签
+    plt.xticks(x_location, x_labels, rotation=45, fontsize=15)
+    plt.yticks(y_location, y_labels, fontsize=15)
     """
     # 添加sin()的水平/垂直参考线
     plt.axhline(y=min(y), c='blue', ls=':', lw=2)
@@ -98,11 +98,11 @@ if False:
     plt.grid(True, ls=':', color='r', alpha=0.5)
 
     # 设置标题
-    plt.title(u"函数式绘图vs对象式绘图",fontsize=25)
+    plt.title(u"函数式绘图vs对象式绘图", fontsize=25)
     # 添加图例
-    plt.legend(loc='upper right',fontsize=15)
+    plt.legend(loc='upper right', fontsize=15)
 
-    #显示图形
+    # 显示图形
     plt.show()
 
 if True:
@@ -115,9 +115,9 @@ if True:
     ax = fig.add_subplot(111)
 
     # 生成数据
-    start_val = 0 #开始值
-    stop_val = 10 #终值
-    num_val = 1000 #样本
+    start_val = 0  # 开始值
+    stop_val = 10  # 终值
+    num_val = 1000  # 样本
     x = np.linspace(start_val, stop_val, num_val)
     y = np.sin(x)
 
@@ -138,79 +138,79 @@ if True:
         ax.set_yticklabels(y_labels, fontsize=15)
 
         # 设置轴标签
-        ax_aux.set_ylabel('Y 轴-辅助',fontsize=15)
+        ax_aux.set_ylabel('Y 轴-辅助', fontsize=15)
 
     if False:
         # 添加sin()的最高点注释
         ax.annotate(u"最高点",
-                     xy = (np.pi/2, 1),#箭头指向点的坐标
-                     xytext = (np.pi/2, 1.3),#注释文本左端的坐标
-                     weight = 'regular',#注释文本的字体粗细风格，bold是粗体，regular是正常粗细
-                     color = 'g',#注释文本的颜色
-                     fontsize = 15,#注释文本的字体大小
-                     arrowprops = {#arrowprops：arrow properties,以字典格式设置箭头属性
-                         'arrowstyle': '->',#箭头类型
-                         'connectionstyle': 'arc3',#连接类型
-                         'color': 'g'#箭头颜色
-                     })
+                    xy=(np.pi / 2, 1),  # 箭头指向点的坐标
+                    xytext=(np.pi / 2, 1.3),  # 注释文本左端的坐标
+                    weight='regular',  # 注释文本的字体粗细风格，bold是粗体，regular是正常粗细
+                    color='g',  # 注释文本的颜色
+                    fontsize=15,  # 注释文本的字体大小
+                    arrowprops={  # arrowprops：arrow properties,以字典格式设置箭头属性
+                        'arrowstyle': '->',  # 箭头类型
+                        'connectionstyle': 'arc3',  # 连接类型
+                        'color': 'g'  # 箭头颜色
+                    })
 
         # 添加sin()的最低点注释
         ax.annotate(u"最低点",
-                     xy = (np.pi*3/2, -1),
-                     xytext = (np.pi*3/2, -1.3),
-                     weight = 'regular',
-                     color = 'r',
-                     fontsize = 15,
-                     arrowprops = {
-                         'arrowstyle': '->',
-                         'connectionstyle': 'arc3',
-                         'color': 'r'
-                     })
+                    xy=(np.pi * 3 / 2, -1),
+                    xytext=(np.pi * 3 / 2, -1.3),
+                    weight='regular',
+                    color='r',
+                    fontsize=15,
+                    arrowprops={
+                        'arrowstyle': '->',
+                        'connectionstyle': 'arc3',
+                        'color': 'r'
+                    })
     if False:
         # 添加sin()的水平/垂直参考线
         ax.axhline(y=min(y), c='blue', ls=':', lw=2)
-        ax.axvline(x=np.pi*3/2, c='blue', ls='-.', lw=2)
+        ax.axvline(x=np.pi * 3 / 2, c='blue', ls='-.', lw=2)
 
         # 添加sin()平行于x/y轴的参考区域
         ax.axhspan(ymin=0, ymax=1, facecolor='purple', alpha=0.3)
-        ax.axvspan(xmin=np.pi*2, xmax=np.pi*5/2, facecolor='g', alpha=0.3)
+        ax.axvspan(xmin=np.pi * 2, xmax=np.pi * 5 / 2, facecolor='g', alpha=0.3)
 
     # 调整坐标轴范围
-    x_min = 0 # x轴数值范围最小值
-    x_max = 10 # x轴数值范围最大值
-    y_min = -1.5 # y轴数值范围最小值
-    y_max = 1.5 # y轴数值范围最小值
+    x_min = 0  # x轴数值范围最小值
+    x_max = 10  # x轴数值范围最大值
+    y_min = -1.5  # y轴数值范围最小值
+    y_max = 1.5  # y轴数值范围最小值
     ax.set_xlim(x_min, x_max)
     ax.set_ylim(y_min, y_max)
 
     # 设置坐标轴标签
-    x_location = np.arange(0,10,2) # x轴坐标位置
-    x_labels = ['2019-01-01','2019-02-01','2019-03-01','2019-04-01','2019-05-01'] #x轴坐标显示标签
-    y_location = np.arange(-1,1.5,1) # y轴坐标位置
-    y_labels = [u'最小值',u'零值',u'最大值'] # y轴坐标显示标签
+    x_location = np.arange(0, 10, 2)  # x轴坐标位置
+    x_labels = ['2019-01-01', '2019-02-01', '2019-03-01', '2019-04-01', '2019-05-01']  # x轴坐标显示标签
+    y_location = np.arange(-1, 1.5, 1)  # y轴坐标位置
+    y_labels = [u'最小值', u'零值', u'最大值']  # y轴坐标显示标签
     ax.set_xticks(x_location)
     ax.set_yticks(y_location)
-    ax.set_xticklabels(x_labels,rotation=45,fontsize=15)
-    ax.set_yticklabels(y_labels,fontsize=15)
+    ax.set_xticklabels(x_labels, rotation=45, fontsize=15)
+    ax.set_yticklabels(y_labels, fontsize=15)
 
     # 设置轴标签
-    ax.set_xlabel('X 轴',fontsize=15)
-    ax.set_ylabel('Y 轴',fontsize=15)
+    ax.set_xlabel('X 轴', fontsize=15)
+    ax.set_ylabel('Y 轴', fontsize=15)
     # 设置网格线
     ax.grid(True, ls=':', color='r', alpha=0.5)
     # 设置标题
-    ax.set_title(u"函数式绘图vs对象式绘图",fontsize=25)
+    ax.set_title(u"函数式绘图vs对象式绘图", fontsize=25)
     # 添加图例
     if True:
-        ax.legend(loc='upper right',fontsize=15)
-    else: # 双轴图例
-        fig.legend(loc='upper right', bbox_to_anchor=(1, 1), bbox_transform=ax.transAxes,fontsize=15)
+        ax.legend(loc='upper right', fontsize=15)
+    else:  # 双轴图例
+        fig.legend(loc='upper right', bbox_to_anchor=(1, 1), bbox_transform=ax.transAxes, fontsize=15)
     # 显示图形
     plt.show()
 
 # 5.2 常用图表类型的绘制
 
-if False: # 绘制标注点样式
+if False:  # 绘制标注点样式
 
     fig = plt.figure(figsize=(12, 8))
     # 在Figure对象中创建一个Axes对象，每个Axes对象即为一个绘图区域
@@ -220,23 +220,23 @@ if False: # 绘制标注点样式
     ax.plot(x, y, marker='o')
 
     ax.annotate(u"样式1", xy=(x[1], y[1]), xytext=(80, 10), textcoords='offset points',
-                 arrowprops=dict(arrowstyle='->',connectionstyle="angle3,angleA=80,angleB=50"))
+                arrowprops=dict(arrowstyle='->', connectionstyle="angle3,angleA=80,angleB=50"))
 
     ax.annotate(u"样式2", xy=(x[3], y[3]), xytext=(80, 10), textcoords='offset points',
-                 arrowprops=dict(facecolor='black', shrink=0.05, width=5))
+                arrowprops=dict(facecolor='black', shrink=0.05, width=5))
 
     ax.annotate(u"样式3", xy=(x[5], y[5]), xytext=(80, 10), textcoords='offset points',
-                 arrowprops=dict(facecolor='green', headwidth=5, headlength=10),
-                 bbox=dict(boxstyle='circle,pad=0.5', fc='yellow', ec='k', lw=1, alpha=0.5)) # fc为facecolor,ec为edgecolor,lw为lineweight
+                arrowprops=dict(facecolor='green', headwidth=5, headlength=10),
+                bbox=dict(boxstyle='circle,pad=0.5', fc='yellow', ec='k', lw=1,
+                          alpha=0.5))  # fc为facecolor,ec为edgecolor,lw为lineweight
 
     ax.annotate(u"样式4", xy=(x[7], y[7]), xytext=(80, 10), textcoords='offset points',
-                 arrowprops=dict(facecolor='blue', headwidth=5, headlength=10),
-                 bbox=dict(boxstyle='round,pad=0.5', fc='gray', ec='k', lw=1, alpha=0.5))
+                arrowprops=dict(facecolor='blue', headwidth=5, headlength=10),
+                bbox=dict(boxstyle='round,pad=0.5', fc='gray', ec='k', lw=1, alpha=0.5))
     # 显示图形
     plt.show()
 
-
-if False: # 绘制成交量条形图
+if False:  # 绘制成交量条形图
     # 对象式绘图
     # pyplot模块中的figure()函数创建名为fig的Figure对象
     fig = plt.figure(figsize=(12, 8))
@@ -251,14 +251,14 @@ if False: # 绘制成交量条形图
     ax.bar(date_index, red_bar, facecolor='red')
     ax.bar(date_index, green_bar, facecolor='green')
     # 设置轴标签
-    ax.set_xlabel(u'交易日',fontsize=15)
-    ax.set_ylabel(u'手',fontsize=15)
+    ax.set_xlabel(u'交易日', fontsize=15)
+    ax.set_ylabel(u'手', fontsize=15)
     # 设置标题
-    ax.set_title(u"成交量",fontsize=25)
+    ax.set_title(u"成交量", fontsize=25)
     # 显示图形
     plt.show()
 
-if False: # 绘制直方图
+if False:  # 绘制直方图
     # 对象式绘图
     # pyplot模块中的figure()函数创建名为fig的Figure对象
     fig = plt.figure(figsize=(12, 8))
@@ -267,14 +267,14 @@ if False: # 绘制直方图
     # 绘制直方图
     ax.hist(np.random.normal(loc=0, scale=1, size=1000), bins=50, density=False, color='b')
     # 设置轴标签
-    ax.set_xlabel(u'样本值',fontsize=15)
-    ax.set_ylabel(u'频数',fontsize=15)
+    ax.set_xlabel(u'样本值', fontsize=15)
+    ax.set_ylabel(u'频数', fontsize=15)
     # 设置标题
-    ax.set_title(u"正态分布直方图",fontsize=25)
+    ax.set_title(u"正态分布直方图", fontsize=25)
     # 显示图形
     plt.show()
 
-if False: # 绘制K线图A
+if False:  # 绘制K线图A
     # 对象式绘图
     # pyplot模块中的figure()函数创建名为fig的Figure对象
     fig = plt.figure(figsize=(12, 8))
@@ -285,20 +285,20 @@ if False: # 绘制K线图A
     closes = [2320.26, 2291.3, 2347.5, 2358.98, 2382.48, 2385.42, 2419.02, 2428.15, 2433.13, 2334.48]
     lows = [2287.3, 2288.26, 2295.35, 2337.35, 2347.89, 2371.23, 2369.57, 2417.58, 2403.3, 2427.7]
     highs = [2362.94, 2308.38, 2345.92, 2363.8, 2382.48, 2383.76, 2391.82, 2421.15, 2440.38, 2441.73]
-    mpf.candlestick2_ochl(ax, opens, closes, highs, lows, width=0.5, colorup='r', colordown='g') # 绘制K线走势
+    mpf.candlestick2_ochl(ax, opens, closes, highs, lows, width=0.5, colorup='r', colordown='g')  # 绘制K线走势
     # pandas生成时间序列
     date_index = pd.date_range('2019-01-01', freq='D', periods=10)
     # 设置x轴的范围
     ax.set_xlim(0, 10)
     # X轴刻度设定 每15天标一个日期
-    ax.set_xticks(np.arange(0,10))
+    ax.set_xticks(np.arange(0, 10))
     # 标签设置为日期
-    ax.set_xticklabels([date_index.strftime('%Y-%m-%d')[index]for index in ax.get_xticks()])
+    ax.set_xticklabels([date_index.strftime('%Y-%m-%d')[index] for index in ax.get_xticks()])
     # 设置轴标签
-    ax.set_xlabel(u'日期',fontsize=15)
-    ax.set_ylabel(u'价格',fontsize=15)
+    ax.set_xlabel(u'日期', fontsize=15)
+    ax.set_ylabel(u'价格', fontsize=15)
     # 设置标题
-    ax.set_title(u"日K线图",fontsize=25)
+    ax.set_title(u"日K线图", fontsize=25)
     # 显示图形
     plt.show()
 
@@ -314,16 +314,16 @@ if False:  # 绘制K线图B
     lows = [2287.3, 2288.26, 2295.35, 2337.35, 2347.89, 2371.23, 2369.57, 2417.58, 2403.3, 2427.7]
     highs = [2362.94, 2308.38, 2345.92, 2363.8, 2382.48, 2383.76, 2391.82, 2421.15, 2440.38, 2441.73]
     # 使用zip方法生成数据列表
-    ohlc = list(zip(np.arange(0,10),opens,closes,highs,lows))
+    ohlc = list(zip(np.arange(0, 10), opens, closes, highs, lows))
     mpf.candlestick_ochl(ax, ohlc, width=0.5, colorup='r', colordown='g', alpha=1.0)
     # pandas生成时间序列
     date_index = pd.date_range('2019-01-01', freq='D', periods=10)
     # 设置x轴的范围
     ax.set_xlim(0, 10)
     # X轴刻度设定 每天标一个日期
-    ax.set_xticks(np.arange(0,10))
+    ax.set_xticks(np.arange(0, 10))
     # 标签设置为日期
-    ax.set_xticklabels([date_index.strftime('%Y-%m-%d')[index]for index in ax.get_xticks()])
+    ax.set_xticklabels([date_index.strftime('%Y-%m-%d')[index] for index in ax.get_xticks()])
     # 设置轴标签
     ax.set_xlabel(u'日期', fontsize=15)
     ax.set_ylabel(u'价格', fontsize=15)
@@ -333,20 +333,20 @@ if False:  # 绘制K线图B
     plt.show()
 
 if False:
-    #图形对象中属性参数的调节
+    # 图形对象中属性参数的调节
 
-    #单条线：
-    #plot([x], y, [fmt], data=None, **kwargs)
-    #多条线一起画
-    #plot([x], y, [fmt], [x2], y2, [fmt2], ..., **kwargs)
+    # 单条线：
+    # plot([x], y, [fmt], data=None, **kwargs)
+    # 多条线一起画
+    # plot([x], y, [fmt], [x2], y2, [fmt2], ..., **kwargs)
 
-    plt.plot([1,2,3,4,5],[3,4,5,6,7],"go--")
-    plt.plot([1,2,3,4,5],[2,3,4,5,6],color='green', marker='o', linestyle='dashed')
-    plt.plot([1,2,3,4,5],[1,2,3,4,5],c='g', marker='o', ls='dashed')
+    plt.plot([1, 2, 3, 4, 5], [3, 4, 5, 6, 7], "go--")
+    plt.plot([1, 2, 3, 4, 5], [2, 3, 4, 5, 6], color='green', marker='o', linestyle='dashed')
+    plt.plot([1, 2, 3, 4, 5], [1, 2, 3, 4, 5], c='g', marker='o', ls='dashed')
     plt.show()
 
-    plt.plot([1,2,3,4,5],[2,3,4,5,6],color='green', marker='o', linestyle='dashed',linewidth=2)
-    plt.plot([1,2,3,4,5],[1,2,3,4,5],c='g', marker='o', ls='dashed',lw=5)
+    plt.plot([1, 2, 3, 4, 5], [2, 3, 4, 5, 6], color='green', marker='o', linestyle='dashed', linewidth=2)
+    plt.plot([1, 2, 3, 4, 5], [1, 2, 3, 4, 5], c='g', marker='o', ls='dashed', lw=5)
     plt.show()
 
 if False:
@@ -378,17 +378,17 @@ if False:
     # subplot()函数
     plt.figure(figsize=(12, 8))
     plt.subplot(211)
-    plt.plot(np.arange(100),np.random.randint(0, 10, 100), label=u"0-10随机数", ls='-', c='r', lw=1)
+    plt.plot(np.arange(100), np.random.randint(0, 10, 100), label=u"0-10随机数", ls='-', c='r', lw=1)
     plt.subplot(212)
-    plt.plot(np.arange(100),np.random.randint(10, 20, 100), label=u"10-20随机数", ls='-', c='y', lw=1)
+    plt.plot(np.arange(100), np.random.randint(10, 20, 100), label=u"10-20随机数", ls='-', c='y', lw=1)
     plt.show()
 
     # subplot()函数 遍历显示图形
-    fig_ps,axes_ps = plt.subplots(2,3)
-    print(fig_ps,axes_ps)
+    fig_ps, axes_ps = plt.subplots(2, 3)
+    print(fig_ps, axes_ps)
     for i in range(2):
         for j in range(3):
-            axes_ps[i,j].plot(np.arange(100),np.random.randint(0, 10, 100),color='y',alpha=0.5)
+            axes_ps[i, j].plot(np.arange(100), np.random.randint(0, 10, 100), color='y', alpha=0.5)
     plt.show()
     """
     Figure(640x480) 

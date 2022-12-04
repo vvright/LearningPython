@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-#-*- encoding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 
 """
 书籍《Python股票量化交易入门到实践 》案例例程
@@ -25,13 +25,13 @@ from pandas.io import sql
 from Code_7_for_stock_data import bs_k_data_stock, pro_daily_stock, json_to_str
 
 # 参数设置
-pd.set_option('display.expand_frame_repr',False) # False不允许换行
-pd.set_option('display.max_rows', 10) # 显示的最大行数
-pd.set_option('display.max_columns', 6) # 显示的最大列数
-pd.set_option('precision', 2) # 显示小数点后的位数
+pd.set_option('display.expand_frame_repr', False)  # False不允许换行
+pd.set_option('display.max_rows', 10)  # 显示的最大行数
+pd.set_option('display.max_columns', 6)  # 显示的最大列数
+pd.set_option('precision', 2)  # 显示小数点后的位数
 
-plt.rcParams['font.sans-serif']=['SimHei'] #用来正常显示中文标签
-plt.rcParams['axes.unicode_minus']=False #用来正常显示负号
+plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
+plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 
 conn = sqlite3.connect('stock-data.db')
 c = conn.cursor()
@@ -57,7 +57,7 @@ if False:
         # 查询表结构
         c.execute("PRAGMA table_info(SZ000002)")
         print(c.fetchall())
-        #[(0, 'ID', 'INT', 1, None, 1), (1, 'TIME', 'TEXT', 1, None, 0), (2, 'CODE', 'TEXT', 1, None, 0), (3, 'HIGH', 'REAL', 0, None, 0), (4, 'LOW', 'REAL', 0, None, 0), (5, 'CLOSE', 'REAL', 0, None, 0), (6, 'OPEN', 'REAL', 0, None, 0), (7, 'DESCRIPTION', 'CHAR(50)', 0, None, 0)]
+        # [(0, 'ID', 'INT', 1, None, 1), (1, 'TIME', 'TEXT', 1, None, 0), (2, 'CODE', 'TEXT', 1, None, 0), (3, 'HIGH', 'REAL', 0, None, 0), (4, 'LOW', 'REAL', 0, None, 0), (5, 'CLOSE', 'REAL', 0, None, 0), (6, 'OPEN', 'REAL', 0, None, 0), (7, 'DESCRIPTION', 'CHAR(50)', 0, None, 0)]
 
         # 插入表
         c.execute("INSERT INTO SZ000002 (ID,TIME,CODE,HIGH,LOW,CLOSE,OPEN,DESCRIPTION) \
@@ -76,28 +76,28 @@ if False:
         # 查询表内容
         c.execute("select * from SZ000002")
         print(c.fetchall())
-        #[(1, '2019-1-1', '2', 10.12, 10.12, 10.12, 10.12, 'Buy Signal'), (2, '2019-1-2', '2', 10.13, 10.13, 10.13, 10.13, 'Sell Signal'), (3, '2019-1-3', '2', 10.14, 10.14, 10.14, 10.14, 'Buy Signal'), (4, '2019-1-4', '2', 10.15, 10.15, 10.15, 10.15, 'Sell Signal')]
+        # [(1, '2019-1-1', '2', 10.12, 10.12, 10.12, 10.12, 'Buy Signal'), (2, '2019-1-2', '2', 10.13, 10.13, 10.13, 10.13, 'Sell Signal'), (3, '2019-1-3', '2', 10.14, 10.14, 10.14, 10.14, 'Buy Signal'), (4, '2019-1-4', '2', 10.15, 10.15, 10.15, 10.15, 'Sell Signal')]
 
         # 更新表
         c.execute("UPDATE SZ000002 set DESCRIPTION = 'None' where ID=1")
         conn.commit()
         c.execute("select * from SZ000002")
         print(c.fetchall())
-        #[(1, '2019-1-1', '2', 10.12, 10.12, 10.12, 10.12, 'None'), (2, '2019-1-2', '2', 10.13, 10.13, 10.13, 10.13, 'Sell Signal'), (3, '2019-1-3', '2', 10.14, 10.14, 10.14, 10.14, 'Buy Signal'), (4, '2019-1-4', '2', 10.15, 10.15, 10.15, 10.15, 'Sell Signal')]
+        # [(1, '2019-1-1', '2', 10.12, 10.12, 10.12, 10.12, 'None'), (2, '2019-1-2', '2', 10.13, 10.13, 10.13, 10.13, 'Sell Signal'), (3, '2019-1-3', '2', 10.14, 10.14, 10.14, 10.14, 'Buy Signal'), (4, '2019-1-4', '2', 10.15, 10.15, 10.15, 10.15, 'Sell Signal')]
 
         # 选择表
         cursor = conn.execute("SELECT id, time, code, description from SZ000002 where HIGH < 10.15 and HIGH > 10.12")
         for row in cursor:
-            print("ID = {}; TIME = {}; CODE = {}; description = {};".format(row[0],row[1],row[2],row[3]))
-            #ID = 2; TIME = 2019-1-2; CODE = 2; description = Sell Signal;
-            #ID = 3; TIME = 2019-1-3; CODE = 2; description = Buy Signal;
+            print("ID = {}; TIME = {}; CODE = {}; description = {};".format(row[0], row[1], row[2], row[3]))
+            # ID = 2; TIME = 2019-1-2; CODE = 2; description = Sell Signal;
+            # ID = 3; TIME = 2019-1-3; CODE = 2; description = Buy Signal;
 
         # 删除表数据
         c.execute("DELETE from SZ000002 where ID=2;")
         conn.commit()
         c.execute("select * from SZ000002")
         print(c.fetchall())
-        #[(1, '2019-1-1', '2', 10.12, 10.12, 10.12, 10.12, 'None'), (3, '2019-1-3', '2', 10.14, 10.14, 10.14, 10.14, 'Buy Signal'), (4, '2019-1-4', '2', 10.15, 10.15, 10.15, 10.15, 'Sell Signal')]
+        # [(1, '2019-1-1', '2', 10.12, 10.12, 10.12, 10.12, 'None'), (3, '2019-1-3', '2', 10.14, 10.14, 10.14, 10.14, 'Buy Signal'), (4, '2019-1-4', '2', 10.15, 10.15, 10.15, 10.15, 'Sell Signal')]
 
         # 删除一个表
         c.execute("drop table SZ000002")
@@ -108,7 +108,6 @@ if False:
         c.execute("drop table SZ000002")
         conn.commit()
         conn.close()
-
 
 # 获取格力电器日线行情数据
 if False:
@@ -138,10 +137,10 @@ else:
     """
 if False:
     df_gldq.to_sql(name='STOCK000651',
-              con=conn,
-              index=False,
-              #index_label='id',
-              if_exists='replace')
+                   con=conn,
+                   index=False,
+                   # index_label='id',
+                   if_exists='replace')
 
     """
     #直接调用sql中的to_sql() 与 DataFrame调用自身的方法效果相同 self参数不同而已
@@ -163,9 +162,12 @@ if False:
 if False:
     # 获取当前最新的股票代码
     def get_stock_code():
-        codes = pro.stock_basic(exchange='', list_status='L', fields='ts_code,symbol,name,area,industry,list_date').ts_code.values
+        codes = pro.stock_basic(exchange='', list_status='L',
+                                fields='ts_code,symbol,name,area,industry,list_date').ts_code.values
         return codes
-    #print(get_stock_code())
+
+
+    # print(get_stock_code())
     """
     ['000001.SZ' '000002.SZ' '000004.SZ' ... '688122.SH' '688333.SH'
      '688388.SH']
@@ -173,12 +175,14 @@ if False:
 
 from concurrent.futures import ThreadPoolExecutor
 
+
 def map_fun(code, start='20190101', end='20190201', table_name='STOCK000001', con_name=conn):
     try:
         data = pro_daily_stock(code, start, end)
         data.to_sql(table_name, con_name, index=False, if_exists='append')
     except:
         print("error code is %s" % code)
+
 
 def stock_to_sql(table_name, con_name):
     stock_code = json_to_str()  # 读取股票池Json文件
@@ -190,8 +194,8 @@ def stock_to_sql(table_name, con_name):
         # resultn 返回的结果是一个生成器
         result = executor.map(map_fun, itr_arg)
 
-def stock_to_sql_for(table_name, con_name, start='20190101', end='20190201'):
 
+def stock_to_sql_for(table_name, con_name, start='20190101', end='20190201'):
     stock_code = json_to_str()
     for code in stock_code['股票'].values():
         try:
@@ -221,13 +225,16 @@ def stock_to_sql_for(table_name, con_name, start='20190101', end='20190201'):
     
     [82405 rows x 11 columns]
     """
-if False:
-    stock_to_sql_for('STOCK000001', conn) # 下载/更新数据库
 
 
 if False:
-    df = pd.read_sql_query("select * from 'STOCK000001' where close > 9 and close < 10  and pct_chg > 5 and trade_date == '20190128'", conn)
-    print(df.loc[:,['ts_code','trade_date','close','pct_chg','vol']])
+    stock_to_sql_for('STOCK000001', conn)  # 下载/更新数据库
+
+if False:
+    df = pd.read_sql_query(
+        "select * from 'STOCK000001' where close > 9 and close < 10  and pct_chg > 5 and trade_date == '20190128'",
+        conn)
+    print(df.loc[:, ['ts_code', 'trade_date', 'close', 'pct_chg', 'vol']])
     """
          ts_code trade_date  close  pct_chg        vol
     0  000603.SZ   20190128   9.62     5.48   79957.80
@@ -236,42 +243,41 @@ if False:
     3  601615.SH   20190128   9.10    10.04   12091.95
     """
 
-if False: # pct_chg > 5 条形图
+if False:  # pct_chg > 5 条形图
     df = pd.read_sql_query("select * from 'STOCK000001' where pct_chg > 5", conn)
-    count_=df.groupby('trade_date')['ts_code'].count()
+    count_ = df.groupby('trade_date')['ts_code'].count()
 
     # 绘图
-    plt.bar(range(len(count_.index)), count_.values, align = 'center',color='steelblue', alpha = 0.8)
+    plt.bar(range(len(count_.index)), count_.values, align='center', color='steelblue', alpha=0.8)
     # 添加轴标签
     plt.ylabel('count')
     # 添加刻度标签
-    plt.xticks(range(len(count_.index)),count_.index, rotation=45)
+    plt.xticks(range(len(count_.index)), count_.index, rotation=45)
     # 添加标题
     plt.title('pct_chg > 5 time distribution')
     # 为每个条形图添加数值标签
-    for x,y in enumerate(count_.values):
-        plt.text(x, y, '%s'%y, ha='center')
+    for x, y in enumerate(count_.values):
+        plt.text(x, y, '%s' % y, ha='center')
     # 显示图形
     plt.show()
 
-if False: # pct_chg < -5 条形图
+if False:  # pct_chg < -5 条形图
     df = pd.read_sql_query("select * from 'STOCK000001' where pct_chg < -5", conn)
-    count_=df.groupby('trade_date')['ts_code'].count()
+    count_ = df.groupby('trade_date')['ts_code'].count()
 
     # 绘图
-    plt.bar(range(len(count_.index)), count_.values, align = 'center',color='steelblue', alpha = 0.8)
+    plt.bar(range(len(count_.index)), count_.values, align='center', color='steelblue', alpha=0.8)
     # 添加轴标签
     plt.ylabel('count')
     # 添加刻度标签
-    plt.xticks(range(len(count_.index)),count_.index, rotation=45)
+    plt.xticks(range(len(count_.index)), count_.index, rotation=45)
     # 添加标题
     plt.title('pct_chg < -5 time distribution')
     # 为每个条形图添加数值标签
-    for x,y in enumerate(count_.values):
-        plt.text(x, y, '%s'%y, ha='center')
+    for x, y in enumerate(count_.values):
+        plt.text(x, y, '%s' % y, ha='center')
     # 显示图形
     plt.show()
-
 
 if False:
     # 慕课网手记集合：Python基础系列讲解——如何使用自带的SQLite数据库
@@ -378,5 +384,3 @@ if False:
     conn.commit()
 
     conn.close()
-
-
